@@ -1,6 +1,7 @@
 import { UserTable } from '@/drizzle/schema/user'
 import { db } from '@/drizzle/db'
 import { eq } from 'drizzle-orm'
+import { revalidateUserCache } from '@/features/users/db/cache'
 
 export async function insertUser(data: typeof UserTable.$inferInsert) {
     const [newUser] = await db
@@ -15,6 +16,8 @@ export async function insertUser(data: typeof UserTable.$inferInsert) {
     if (newUser === null) {
         throw new Error('Failed to insert user')
     }
+
+    newUser && revalidateUserCache(newUser.id)
 
     return newUser
 }
@@ -33,6 +36,8 @@ export async function updateUser(
         throw new Error('Failed to updated user')
     }
 
+    updatedUser && revalidateUserCache(updatedUser.id)
+
     return updatedUser
 }
 
@@ -48,6 +53,8 @@ export async function deleteUser({ clerkUserId }: { clerkUserId: string }) {
     if (deletedUser === null) {
         throw new Error('Failed to deleted user')
     }
+
+    deletedUser && revalidateUserCache(deletedUser.id)
 
     return deletedUser
 }
