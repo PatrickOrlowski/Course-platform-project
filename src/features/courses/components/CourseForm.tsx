@@ -29,9 +29,10 @@ const CourseForm = () => {
     })
 
     const onSubmit = async (values: z.infer<typeof courseSchema>) => {
-        console.log(values)
         const data = await createCourse(values)
-        actionToast({ actionData: data })
+        actionToast({
+            actionData: data,
+        })
     }
 
     return (

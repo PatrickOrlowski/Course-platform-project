@@ -1,17 +1,18 @@
-import { toast, ToasterProps, ToastClassnames, ToastT } from 'sonner'
+import { toast, ToastT } from 'sonner'
 
 export function actionToast({
     actionData,
-}: {
-    actionData: {
-        error: boolean
-        message: string
-    }
-}) {
-
-    if(actionData.error){
-        return toast.error(actionData.message)
+    ...props
+}: Partial<Omit<ToastT, 'description'>> & { actionData: { error: boolean; message: string } }) {
+    if (actionData.error) {
+        return toast.error('Error', {
+            ...props,
+            description: actionData.message,
+        })
     }
 
-    return toast.success(actionData.message)
+    return toast.success('Success', {
+        ...props,
+        description: actionData.message,
+    })
 }
