@@ -12,7 +12,7 @@ import {
     deleteSectionDB,
     getNextCourseSectionOrderDB,
     insertSectionDB,
-    updateSectionDB,
+    updateSectionDB, updateSectionOrdersDB,
 } from '@/features/courseSections/db/section'
 
 export async function createSection(
@@ -72,4 +72,21 @@ export async function deleteSection(id: string) {
         error: false,
         message: 'Section deleted successfully',
     }
+}
+
+export async function updateSectionOrders(sectionsIds:string[]){
+    if(sectionsIds.length === 0 || !canUpdateCourseSections(await getCurrentUser())){
+        return {
+            error: true,
+            message: 'There was an error updating the sections order'
+        }
+    }
+
+    await updateSectionOrdersDB(sectionsIds)
+
+    return {
+        error: false,
+        message: 'Sections order updated successfully'
+    }
+
 }
