@@ -1,0 +1,137 @@
+'use client'
+import React from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { z } from 'zod'
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from '@/components/ui/form'
+import { RequiredLabelIcon } from '@/components/RequiredLabelIcon'
+import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
+import { actionToast } from '@/lib/actionToast'
+import {
+    courseSectionStatuses,
+    CourseSelectionStatus,
+} from '@/drizzle/schema/courseSection'
+import { sectionSchema } from '@/features/courseSections/schemas/sections'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select'
+import {
+    createSection,
+    updateSection,
+} from '@/features/courseSections/actions/sections'
+
+const SectionForm = ({
+    section,
+    courseId,
+    onSuccess,
+}: {
+    section?: {
+        id: string
+        name: string
+        status: CourseSelectionStatus
+    }
+    courseId: string
+    onSuccess?: () => void
+}) => {
+    const form = useForm<z.infer<typeof sectionSchema>>({
+        resolver: zodResolver(sectionSchema),
+        defaultValues: section ?? {
+            name: '',
+            status: 'public',
+        },
+    })
+
+    const onSubmit = async (values: z.infer<typeof sectionSchema>) => {
+        const action =
+            section == null
+                ? createSection.bind(null, courseId)
+                : updateSection.bind(null, section.id)
+        const data = await action(values)
+        actionToast({
+            actionData: data,
+        })
+        if (!data.error) {
+            onSuccess?.()
+        }
+    }
+
+    return (
+        <Form {...form}>
+            <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className={'flex flex-col gap-6 @container'}
+            >
+                <div className={'grid grid-cols-1 @lg:grid-cols-2 gap-6'}>
+                    <FormField
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>
+                                    <RequiredLabelIcon />
+                                    Name
+                                </FormLabel>
+                                <FormControl>
+                                    <Input {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                        name={'name'}
+                        control={form.control}
+                    />
+                    <FormField
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Status</FormLabel>
+                                <Select
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                >
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {courseSectionStatuses.map((status) => (
+                                            <SelectItem
+                                                key={status}
+                                                value={status}
+                                            >
+                                                {status}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                        name={'status'}
+                        control={form.control}
+                    />
+                </div>
+                <div className={'self-end'}>
+                    <Button
+                        type={'submit'}
+                        disabled={form.formState.isSubmitting}
+                    >
+                        Save
+                    </Button>
+                </div>
+            </form>
+        </Form>
+    )
+}
+
+export default SectionForm

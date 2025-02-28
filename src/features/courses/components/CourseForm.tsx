@@ -16,20 +16,28 @@ import { RequiredLabelIcon } from '@/components/RequiredLabelIcon'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import { createCourse } from '@/features/courses/actions/courses'
+import { createCourse, updateCourse } from '@/features/courses/actions/courses'
 import { actionToast } from '@/lib/actionToast'
 
-const CourseForm = () => {
+const CourseForm = ({
+    course,
+}: {
+    course?: z.infer<typeof courseSchema> & {
+        id: string
+    }
+}) => {
     const form = useForm<z.infer<typeof courseSchema>>({
         resolver: zodResolver(courseSchema),
-        defaultValues: {
+        defaultValues: course ?? {
             name: '',
             description: '',
         },
     })
 
     const onSubmit = async (values: z.infer<typeof courseSchema>) => {
-        const data = await createCourse(values)
+        const action =
+            course == null ? createCourse : updateCourse.bind(null, course.id)
+        const data = await action(values)
         actionToast({
             actionData: data,
         })
@@ -81,7 +89,7 @@ const CourseForm = () => {
                         type={'submit'}
                         disabled={form.formState.isSubmitting}
                     >
-                        Create Course
+                        Save
                     </Button>
                 </div>
             </form>
