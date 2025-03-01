@@ -26,6 +26,7 @@ import { LessonStatus, lessonStatuses } from '@/drizzle/schema/lesson'
 import { lessonSchema } from '@/features/lessons/schemas/lesson'
 import { Textarea } from '@/components/ui/textarea'
 import { createLesson, updateLesson } from '@/features/lessons/actions/lesson'
+import { YoutubeVideoPlayer } from '@/features/lessons/components/YoutubeVideoPlayer'
 
 const LessonForm = ({
     sections,
@@ -176,9 +177,7 @@ const LessonForm = ({
                     <FormField
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>
-                                    Description
-                                </FormLabel>
+                                <FormLabel>Description</FormLabel>
                                 <FormControl>
                                     <Textarea
                                         {...field}
@@ -201,7 +200,11 @@ const LessonForm = ({
                         Save
                     </Button>
                 </div>
-                {/*{videoId && <YoutubeVideoPlayer videoId={videoId} />}*/}
+                {videoId && (
+                    <div className={'aspect-video'}>
+                        <YoutubeVideoPlayer videoId={videoId} />
+                    </div>
+                )}
             </form>
         </Form>
     )
