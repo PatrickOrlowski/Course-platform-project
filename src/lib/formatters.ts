@@ -12,3 +12,20 @@ export function formatPlural(
     const word = count === 1 ? singular : plural
     return includeCount ? `${count} ${word}` : word
 }
+
+export function formatPrice(
+    priceInDollars: number,
+    { showZeroAsNumber = true } = {}
+) {
+    const formatter = new Intl.NumberFormat(undefined, {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: Number.isInteger(priceInDollars) ? 0 : 2,
+    })
+
+    if (priceInDollars === 0 && !showZeroAsNumber) {
+        return 'Free'
+    }
+
+    return formatter.format(priceInDollars)
+}
