@@ -40,7 +40,10 @@ export default async function EditCoursePage({
                     <TabsTrigger value={'lessons'}>Lessons</TabsTrigger>
                     <TabsTrigger value={'details'}>Details</TabsTrigger>
                 </TabsList>
-                <TabsContent value={'lessons'} className={'flex flex-col gap-2'}>
+                <TabsContent
+                    value={'lessons'}
+                    className={'flex flex-col gap-2'}
+                >
                     <Card>
                         <CardHeader
                             className={
@@ -83,7 +86,10 @@ export default async function EditCoursePage({
                                     )}{' '}
                                     {section.name}
                                 </CardTitle>
-                                <LessonFormDialog defaultSectionId={section.id} sections={course.courseSections} >
+                                <LessonFormDialog
+                                    defaultSectionId={section.id}
+                                    sections={course.courseSections}
+                                >
                                     <DialogTrigger asChild={true}>
                                         <Button variant={'outline'}>
                                             <PlusIcon /> New Lesson
