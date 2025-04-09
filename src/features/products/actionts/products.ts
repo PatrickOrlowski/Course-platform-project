@@ -3,9 +3,17 @@
 import { z } from 'zod'
 import { redirect } from 'next/navigation'
 import { getCurrentUser } from '@/services/clerk'
-import { canCreateProducts, canDeleteProducts, canUpdateProducts } from '../permissions/products'
+import {
+    canCreateProducts,
+    canDeleteProducts,
+    canUpdateProducts,
+} from '../permissions/products'
 import { productSchema } from '@/features/products/schema/products'
-import { deleteProductDB, insertProductDB, updateProductDB } from '@/features/products/db/products'
+import {
+    deleteProductDB,
+    insertProductDB,
+    updateProductDB,
+} from '@/features/products/db/products'
 
 export async function createProduct(unsafeData: z.infer<typeof productSchema>) {
     const { success, data } = productSchema.safeParse(unsafeData)
@@ -17,9 +25,9 @@ export async function createProduct(unsafeData: z.infer<typeof productSchema>) {
         }
     }
 
-    const product = await insertProductDB(data)
+    await insertProductDB(data)
 
-    redirect(`/admin/products/${product.id}/edit`)
+    redirect(`/admin/products`)
 }
 export async function updateProduct(
     id: string,
