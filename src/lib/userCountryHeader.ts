@@ -1,9 +1,10 @@
+'use server'
 import { headers } from 'next/headers'
 import { pppCoupons } from '@/data/pppCoupons'
 
 const COUNTRY_HEADER_KEY = 'x-user-country'
 
-export function setUserCountryHeader(header:Headers, country: string | undefined) {
+export async function setUserCountryHeader(header:Headers, country: string | undefined) {
     if (!country) {
         header.delete(COUNTRY_HEADER_KEY)
     } else {

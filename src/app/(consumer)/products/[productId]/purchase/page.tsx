@@ -11,6 +11,7 @@ import { getCurrentUser } from '@/services/clerk'
 import { userOwnsProduct } from '@/features/products/db/products'
 import PageHeader from '@/components/PageHeader'
 import { SignIn, SignUp } from '@clerk/nextjs'
+import { StripeCheckoutForm } from '@/services/stripe/components/StripeCheckoutForm'
 
 export default async function PurchasePage({
     params,
@@ -48,7 +49,11 @@ async function SuspendedComponent({
             redirect('/courses')
         }
 
-        return <div className={'container my-6'}>{/*  stripe form  */}</div>
+        return (
+            <div className={'container my-6'}>
+                <StripeCheckoutForm product={product} user={user} />
+            </div>
+        )
     }
 
     const isSignUp = authMode === 'signUp'
