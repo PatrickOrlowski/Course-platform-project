@@ -10,6 +10,7 @@ import { notFound, redirect } from 'next/navigation'
 import { getCurrentUser } from '@/services/clerk'
 import { userOwnsProduct } from '@/features/products/db/products'
 import PageHeader from '@/components/PageHeader'
+import { SignIn, SignUp } from '@clerk/nextjs'
 
 export default async function PurchasePage({
     params,
@@ -54,8 +55,20 @@ async function SuspendedComponent({
 
     return (
         <div className={'container my-6 flex flex-col items-center'}>
-            <PageHeader title={"You need an account to make a purchase"} />
-
+            <PageHeader title={'You need an account to make a purchase'} />
+            {isSignUp ? (
+                <SignUp
+                    routing={'hash'}
+                    signInUrl={`/products/${productId}/purchase?authMode=signIn`}
+                    forceRedirectUrl={`/products/${productId}/purchase`}
+                />
+            ) : (
+                <SignIn
+                    routing={'hash'}
+                    signUpUrl={`/products/${productId}/purchase?authMode=signUn`}
+                    forceRedirectUrl={`/products/${productId}/purchase`}
+                />
+            )}
         </div>
     )
 }
