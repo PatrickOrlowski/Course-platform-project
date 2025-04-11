@@ -11,7 +11,7 @@ const NewProductPage = async () => {
     return (
         <div className={'container my-6'}>
             <PageHeader title={'New Product'} />
-            <ProductForm courses={await getCourses()}/>
+            <ProductForm courses={await getCourses()} />
         </div>
     )
 }

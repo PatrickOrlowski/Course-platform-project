@@ -1,12 +1,13 @@
-import { db } from "@/drizzle/db"
-import { CourseSectionTable, LessonTable } from "@/drizzle/schema"
-import { eq } from "drizzle-orm"
-import { revalidateLessonCache } from "./cache/lessons"
+import { db } from '@/drizzle/db'
+import { CourseSectionTable, LessonTable } from '@/drizzle/schema'
+import { eq } from 'drizzle-orm'
+import { revalidateLessonCache } from './cache/lessons'
 
 export async function getNextCourseLessonOrder(sectionId: string) {
     const lesson = await db.query.LessonTable.findFirst({
         columns: { order: true },
-        where: ({ sectionId: sectionIdCol }, { eq }) => eq(sectionIdCol, sectionId),
+        where: ({ sectionId: sectionIdCol }, { eq }) =>
+            eq(sectionIdCol, sectionId),
         orderBy: ({ order }, { desc }) => desc(order),
     })
 
@@ -14,39 +15,44 @@ export async function getNextCourseLessonOrder(sectionId: string) {
 }
 
 export async function insertLessonDB(data: typeof LessonTable.$inferInsert) {
-    return await db.transaction(async trx => {
-        console.log("🔍 Szukam sekcji o ID:", data.sectionId);
+    return await db.transaction(async (trx) => {
+        console.log('🔍 Szukam sekcji o ID:', data.sectionId)
 
         const section = await trx.query.CourseSectionTable.findFirst({
             columns: { courseId: true },
             where: eq(CourseSectionTable.id, data.sectionId),
-        });
+        })
 
         if (!section) {
-            throw new Error(`❌ Section does not exist for ID: ${data.sectionId}`);
+            throw new Error(
+                `❌ Section does not exist for ID: ${data.sectionId}`
+            )
         }
 
-        console.log("✅ Znaleziono sekcję:", section);
+        console.log('✅ Znaleziono sekcję:', section)
 
-        const [newLesson] = await trx.insert(LessonTable).values(data).returning();
+        const [newLesson] = await trx
+            .insert(LessonTable)
+            .values(data)
+            .returning()
 
         if (!newLesson) {
-            throw new Error("❌ Failed to create lesson");
+            throw new Error('❌ Failed to create lesson')
         }
 
-        revalidateLessonCache({ courseId: section.courseId, id: newLesson.id });
+        revalidateLessonCache({ courseId: section.courseId, id: newLesson.id })
 
-        console.log("🎉 Pomyślnie dodano lekcję:", newLesson.id);
+        console.log('🎉 Pomyślnie dodano lekcję:', newLesson.id)
 
-        return newLesson;
-    });
+        return newLesson
+    })
 }
 
 export async function updateLessonDB(
     id: string,
     data: Partial<typeof LessonTable.$inferInsert>
 ) {
-    const [updatedLesson, courseId] = await db.transaction(async trx => {
+    const [updatedLesson, courseId] = await db.transaction(async (trx) => {
         const currentLesson = await trx.query.LessonTable.findFirst({
             where: eq(LessonTable.id, id),
             columns: { sectionId: true },
@@ -67,7 +73,7 @@ export async function updateLessonDB(
             .returning()
         if (updatedLesson == null) {
             trx.rollback()
-            throw new Error("Failed to update lesson")
+            throw new Error('Failed to update lesson')
         }
 
         const section = await trx.query.CourseSectionTable.findFirst({
@@ -86,14 +92,14 @@ export async function updateLessonDB(
 }
 
 export async function deleteLessonDB(id: string) {
-    const [deletedLesson, courseId] = await db.transaction(async trx => {
+    const [deletedLesson, courseId] = await db.transaction(async (trx) => {
         const [deletedLesson] = await trx
             .delete(LessonTable)
             .where(eq(LessonTable.id, id))
             .returning()
         if (deletedLesson == null) {
             trx.rollback()
-            throw new Error("Failed to delete lesson")
+            throw new Error('Failed to delete lesson')
         }
 
         const section = await trx.query.CourseSectionTable.findFirst({
@@ -115,7 +121,7 @@ export async function deleteLessonDB(id: string) {
 }
 
 export async function updateLessonOrdersDB(lessonIds: string[]) {
-    const [lessons, courseId] = await db.transaction(async trx => {
+    const [lessons, courseId] = await db.transaction(async (trx) => {
         const lessons = await Promise.all(
             lessonIds.map((id, index) =>
                 db

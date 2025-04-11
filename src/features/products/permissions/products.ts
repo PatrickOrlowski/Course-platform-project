@@ -12,4 +12,4 @@ export function canUpdateProducts(user: { role: UserRole | undefined }) {
     return user.role === 'admin'
 }
 
-export const wherePublicProducts = eq(ProductTable.status, "public")
+export const wherePublicProducts = eq(ProductTable.status, 'public')

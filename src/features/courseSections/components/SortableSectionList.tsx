@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { CourseSelectionStatus } from '@/drizzle/schema/courseSection'
 import { SortableItem, SortableList } from '@/components/SortableList'
 import { cn } from '@/lib/utils'
 import { EyeClosed, Trash2Icon } from 'lucide-react'
@@ -13,13 +12,14 @@ import {
     deleteSection,
     updateSectionOrders,
 } from '@/features/courseSections/actions/sections'
+import { CourseSectionStatus } from '@/drizzle/schema/courseSection'
 
 export const SortableSectionList = ({
     courseId,
     sections,
 }: {
     courseId: string
-    sections: { id: string; name: string; status: CourseSelectionStatus }[]
+    sections: { id: string; name: string; status: CourseSectionStatus }[]
 }) => {
     return (
         <SortableList items={sections} onOrderChange={updateSectionOrders}>

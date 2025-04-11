@@ -20,8 +20,6 @@ export default async function PurchasePage({
     params: Promise<{ productId: string }>
     searchParams: Promise<{ authMode: string }>
 }) {
-    const { productId } = await params
-
     return (
         <Suspense
             fallback={<LoadingSpinner className={'my-6 size-36 mx-auto'} />}

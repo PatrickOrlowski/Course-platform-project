@@ -18,7 +18,6 @@ export const env = createEnv({
             process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL,
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
             process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-        NEXT_PUBLIC_SERVER_URL:
-            process.env.NEXT_PUBLIC_SERVER_URL,
+        NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
     },
 })

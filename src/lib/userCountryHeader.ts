@@ -4,7 +4,10 @@ import { pppCoupons } from '@/data/pppCoupons'
 
 const COUNTRY_HEADER_KEY = 'x-user-country'
 
-export async function setUserCountryHeader(header:Headers, country: string | undefined) {
+export async function setUserCountryHeader(
+    header: Headers,
+    country: string | undefined
+) {
     if (!country) {
         header.delete(COUNTRY_HEADER_KEY)
     } else {
@@ -13,17 +16,19 @@ export async function setUserCountryHeader(header:Headers, country: string | und
 }
 
 async function getUserCountry() {
-    const head = await headers();
+    const head = await headers()
     return head.get(COUNTRY_HEADER_KEY)
 }
 
-export async function getUserCoupon(){
+export async function getUserCoupon() {
     const country = await getUserCountry()
     if (!country) {
         return null
     }
 
-    const coupon = pppCoupons.find((coupon) => coupon.countryCodes.includes(country))
+    const coupon = pppCoupons.find((coupon) =>
+        coupon.countryCodes.includes(country)
+    )
 
     if (!coupon) {
         return null

@@ -180,7 +180,9 @@ export default async function ProductPage({
                                                     'preview' ? (
                                                         <Link
                                                             href={`/courses/${course.id}/lessons/${lesson.id}`}
-                                                            className={'underline text-accent'}
+                                                            className={
+                                                                'underline text-accent'
+                                                            }
                                                         >
                                                             {lesson.name}
                                                         </Link>

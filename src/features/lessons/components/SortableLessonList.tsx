@@ -9,7 +9,10 @@ import { Button } from '@/components/ui/button'
 import { ActionButton } from '@/components/ActionButton'
 import { LessonStatus } from '@/drizzle/schema/lesson'
 import { LessonFormDialog } from '@/features/lessons/components/LessonFormDialog'
-import { deleteLesson, updateLessonOrders } from '@/features/lessons/actions/lesson'
+import {
+    deleteLesson,
+    updateLessonOrders,
+} from '@/features/lessons/actions/lesson'
 
 export const SortableLessonList = ({
     sections,

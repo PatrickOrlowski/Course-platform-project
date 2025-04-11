@@ -105,6 +105,7 @@ async function processStripeCheckout(checkoutSession: Stripe.Checkout.Session) {
             )
         } catch (e) {
             trx.rollback()
+            console.error('Error processing purchase:', e)
             throw new Error('Error processing purchase')
         }
     })

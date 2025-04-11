@@ -12,4 +12,4 @@ export function canUpdateCourseSections(user: { role: UserRole | undefined }) {
     return user.role === 'admin'
 }
 
-export const wherePublicCourseSections = eq(CourseSectionTable.status, "public")
+export const wherePublicCourseSections = eq(CourseSectionTable.status, 'public')

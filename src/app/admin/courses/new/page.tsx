@@ -4,8 +4,8 @@ import CourseForm from '@/features/courses/components/CourseForm'
 
 const NewCoursePage = () => {
     return (
-        <div className={"container my-6"}>
-            <PageHeader title={"New Course"} />
+        <div className={'container my-6'}>
+            <PageHeader title={'New Course'} />
             <CourseForm />
         </div>
     )

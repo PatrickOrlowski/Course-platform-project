@@ -57,7 +57,9 @@ export async function POST(req: Request) {
                     role: 'user',
                 })
 
-                user && (await syncClerkUserMetadata(user))
+                if (user) {
+                    await syncClerkUserMetadata(user)
+                }
             } else {
                 await updateUser(
                     { clerkUserId: event.data.id },

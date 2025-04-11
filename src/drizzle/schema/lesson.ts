@@ -17,7 +17,7 @@ export const LessonTable = pgTable('lessons', {
     status: lessonStatusEnum().notNull().default('private'),
     sectionId: uuid()
         .notNull()
-        .references(() => CourseSectionTable.id, { onDelete: "cascade" }),
+        .references(() => CourseSectionTable.id, { onDelete: 'cascade' }),
     createdAt,
     updatedAt,
 })

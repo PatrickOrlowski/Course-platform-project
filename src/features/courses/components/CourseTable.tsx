@@ -1,5 +1,12 @@
 import React from 'react'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table'
 import { formatPlural } from '@/lib/formatters'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
@@ -7,7 +14,9 @@ import { Trash2Icon } from 'lucide-react'
 import { deleteCourse } from '@/features/courses/actions/courses'
 import { ActionButton } from '@/components/ActionButton'
 
-export const CourseTable = ({courses}:{
+export const CourseTable = ({
+    courses,
+}: {
     courses: {
         id: string
         name: string
@@ -22,8 +31,8 @@ export const CourseTable = ({courses}:{
                 <TableRow>
                     <TableHead>
                         {formatPlural(courses.length, {
-                            singular: "course",
-                            plural: "courses",
+                            singular: 'course',
+                            plural: 'courses',
                         })}
                     </TableHead>
                     <TableHead>Students</TableHead>
@@ -31,20 +40,22 @@ export const CourseTable = ({courses}:{
                 </TableRow>
             </TableHeader>
             <TableBody>
-                {courses.map(course => (
+                {courses.map((course) => (
                     <TableRow key={course.id}>
                         <TableCell>
                             <div className="flex flex-col gap-1">
-                                <div className="font-semibold">{course.name}</div>
+                                <div className="font-semibold">
+                                    {course.name}
+                                </div>
                                 <div className="text-muted-foreground">
                                     {formatPlural(course.sectionsCount, {
-                                        singular: "section",
-                                        plural: "sections",
-                                    })}{" "}
-                                    •{" "}
+                                        singular: 'section',
+                                        plural: 'sections',
+                                    })}{' '}
+                                    •{' '}
                                     {formatPlural(course.lessonsCount, {
-                                        singular: "lesson",
-                                        plural: "lessons",
+                                        singular: 'lesson',
+                                        plural: 'lessons',
                                     })}
                                 </div>
                             </div>
@@ -53,7 +64,11 @@ export const CourseTable = ({courses}:{
                         <TableCell>
                             <div className="flex gap-2">
                                 <Button asChild>
-                                    <Link href={`/admin/courses/${course.id}/edit`}>Edit</Link>
+                                    <Link
+                                        href={`/admin/courses/${course.id}/edit`}
+                                    >
+                                        Edit
+                                    </Link>
                                 </Button>
                                 <ActionButton
                                     variant="destructive"

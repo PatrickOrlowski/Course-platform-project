@@ -17,7 +17,9 @@ export async function insertUser(data: typeof UserTable.$inferInsert) {
         throw new Error('Failed to insert user')
     }
 
-    newUser && revalidateUserCache(newUser.id)
+    if (newUser) {
+        revalidateUserCache(newUser.id)
+    }
 
     return newUser
 }
@@ -36,7 +38,9 @@ export async function updateUser(
         throw new Error('Failed to updated user')
     }
 
-    updatedUser && revalidateUserCache(updatedUser.id)
+    if (updatedUser) {
+        revalidateUserCache(updatedUser.id)
+    }
 
     return updatedUser
 }
@@ -54,7 +58,9 @@ export async function deleteUser({ clerkUserId }: { clerkUserId: string }) {
         throw new Error('Failed to deleted user')
     }
 
-    deletedUser && revalidateUserCache(deletedUser.id)
+    if (deletedUser) {
+        revalidateUserCache(deletedUser.id)
+    }
 
     return deletedUser
 }

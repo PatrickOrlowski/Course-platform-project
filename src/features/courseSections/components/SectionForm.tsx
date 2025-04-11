@@ -16,8 +16,8 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { actionToast } from '@/lib/actionToast'
 import {
+    CourseSectionStatus,
     courseSectionStatuses,
-    CourseSelectionStatus,
 } from '@/drizzle/schema/courseSection'
 import { sectionSchema } from '@/features/courseSections/schemas/sections'
 import {
@@ -40,7 +40,7 @@ const SectionForm = ({
     section?: {
         id: string
         name: string
-        status: CourseSelectionStatus
+        status: CourseSectionStatus
     }
     courseId: string
     onSuccess?: () => void
