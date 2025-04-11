@@ -29,3 +29,12 @@ export function formatPrice(
 
     return formatter.format(priceInDollars)
 }
+
+export function formatDate(date: Date) {
+    const formatter = new Intl.DateTimeFormat(undefined, {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+    })
+
+    return formatter.format(new Date(date))
+}

@@ -7,7 +7,7 @@ import { eq } from 'drizzle-orm'
 import { UserTable } from '@/drizzle/schema/user'
 import { ProductTable } from '@/drizzle/schema/product'
 import { addUserCourseAccess } from '@/features/courses/db/userCourseAccess'
-import { insertPurchase } from '@/features/purchases/purchases'
+import { insertPurchase } from '@/features/purchases/db/purchases'
 import { env } from '@/data/env/server'
 
 export async function GET(request: NextRequest) {
